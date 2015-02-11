@@ -1,25 +1,25 @@
 class Project
-  attr_reader :funding_goal, :funds
+  attr_reader :goal, :funds
   attr_accessor :name
 
-  def initialize(name, funds, goal=3000)
-    @name = name
+  def initialize(name, goal, funds=0)
+    @goal = goal
+    @name = name.capitalize
     @funds = funds
-    @funding_goal = goal
   end
 
-  def add_funds(value)
+  def add_funds
     puts "Project #{@name} got more funds!"
-    @funds += value.to_i
+    @funds += 25
   end
 
-  def subtract_funds(value)
+  def subtract_funds
     puts "Project #{@name} lost some funds"
-    @funds -= value.to_i
+    @funds -= 15
   end
 
-  def needed_funds
-    @funding_goal - @funds
+  def funds_needed
+    @goal - @funds
   end
 
   def to_s

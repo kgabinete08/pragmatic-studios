@@ -3,7 +3,7 @@ class Player
   attr_accessor :name
 
   def initialize(name, health=100)
-    @name = name
+    @name = name.capitalize
     @health = health
   end
 
@@ -15,17 +15,16 @@ class Player
     @health -= 10
   end
 
-  def time
-    current_time = Time.new
-    current_time.strftime("%I/%M/%S")
-  end
-
   def score
     @health + @name.length
   end
 
   def name=(new_name)
     @name = new_name.capitalize
+  end
+
+  def strong?
+    @health > 100
   end
 
   def to_s
