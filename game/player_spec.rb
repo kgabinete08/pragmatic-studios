@@ -1,10 +1,11 @@
 require_relative 'player'
+require_relative 'treasure_trove'
 
 describe Player do
 
   before do
-    @initial_health = 80
-    @player = Player.new("bob", 80)
+    @initial_health = 150
+    @player = Player.new("bob", 150)
   end
 
   it "has a capitalized name" do
@@ -15,12 +16,18 @@ describe Player do
     @player.health.should == @initial_health
   end
 
-  it "has a score of health plus name length" do
-    @player.score.should == (@player.health + @player.name.length)
+  it "has a score of health plus points" do
+    @player.found_treasure(Treasure.new(:hammer, 50))
+    @player.found_treasure(Treasure.new(:hammer, 50))
+  
+    @player.score.should == 250
   end
 
   it "has a string representation" do
-    @player.to_s.should == "I'm Bob with a health of 80 and a score of 83."
+    @player.found_treasure(Treasure.new(:hammer, 50))
+    @player.found_treasure(Treasure.new(:hammer, 50))
+
+    @player.to_s.should == "I'm Bob with health = 150, points = 100, and score = 250."
   end
 
   it "increases health by 15 when w00ted" do
@@ -32,6 +39,22 @@ describe Player do
     @player.blam
     @player.health.should == @initial_health - 10
   end
+
+  it "computes points as the sum of all treasure points" do
+  @player.points.should == 0
+
+  @player.found_treasure(Treasure.new(:hammer, 50))
+
+  @player.points.should == 50
+
+  @player.found_treasure(Treasure.new(:crowbar, 400))
+  
+  @player.points.should == 450
+  
+  @player.found_treasure(Treasure.new(:hammer, 50))
+
+  @player.points.should == 500
+end
 
   context "created with a default health" do
     before do
