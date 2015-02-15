@@ -4,19 +4,22 @@ require_relative 'game'
 player1 = Player.new("Moe")
 player2 = Player.new("Larry", 60)
 player3 = Player.new("Curly", 125)
-player4 = Player.new("Alvin", 100)
-player5 = Player.new("Simon", 60)
-player6 = Player.new("Theo", 125)
 
 knuckleheads = Game.new("Knuckleheads")
-knuckleheads.add_player(player1)
-knuckleheads.add_player(player2)
-knuckleheads.add_player(player3)
-knuckleheads.play(2)
-knuckleheads.print_stats
+knuckleheads.load_players(ARGV.shift || "players.csv")
 
-# chipmunks = Game.new("Chipmunks")
-# chipmunks.add_player(player4)
-# chipmunks.add_player(player5)
-# chipmunks.add_player(player6)
-# chipmunks.play(2)
+loop do
+  puts "How many game rounds? ('quit' to exit)"
+  answer = gets.chomp
+  case answer
+  when /^\d+$/
+    knuckleheads.play(answer.to_i)
+  when 'quit', 'exit'
+    knuckleheads.print_stats
+    break
+  else 
+    puts "Please enter a number or 'quit"
+  end
+end
+
+knuckleheads.save_high_scores

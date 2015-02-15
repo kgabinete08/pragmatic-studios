@@ -9,6 +9,26 @@ class Game
     @players = []
   end
 
+  def save_high_scores(to_file="high_scores.txt")
+    File.open(to_file, "w") do |file|
+      file.puts "#{@title} High Scores:"
+      @players.sort.each do |player|
+        file.puts high_score_entry(player)
+      end
+    end
+  end
+
+  def load_players(file_name)
+    File.readlines(file_name).each do |line|
+      add_player(Player.from_csv(line))
+    end
+  end
+
+  def high_score_entry(player)
+    formatted_name = player.name.ljust(20, '.')
+    "#{formatted_name} #{player.score}"
+  end
+
   def add_player(player)
     @players << player
   end
@@ -39,6 +59,9 @@ class Game
   def print_stats
     @players.each do |player|
       puts "\n#{player.name}'s point totals:"
+      player.each_found_treasure do |treasure|
+        puts "#{treasure.points} total #{treasure.name} points"
+      end
       puts "#{player.points} grand total points"
     end
 
@@ -57,8 +80,7 @@ class Game
     puts "\n#{@title} High Scores:"
 
     @players.sort.each do |player|
-      formatted_name = player.name.ljust(20, '.')
-      puts "#{formatted_name} #{player.score}"
+      puts high_score_entry(player)
     end
   end
 end
